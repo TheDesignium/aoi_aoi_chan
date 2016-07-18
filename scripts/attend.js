@@ -10,21 +10,21 @@ function handleDisconnect() {
     database : db.database,
     user     : db.user,
     password : db.password
-  });  
+  });
 
-  connection.connect(function(err) {             
-    if(err) {                                    
+  connection.connect(function(err) {
+    if(err) {
       console.log('error when connecting to db:', err);
       setTimeout(handleDisconnect, 2000);  //接続失敗時リトライ
-    }                                  
-  });                                    
+    }
+  });
 
   connection.on('error', function(err) { //エラー受け取るコールバック
     console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
-      handleDisconnect();    //再度接続                     
-    } else {                                     
-      throw err;                                
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();    //再度接続
+    } else {
+      throw err;
     }
   });
 }
@@ -71,7 +71,7 @@ module.exports = function(robot) {
        });
      }
    });
-  
+
  });
 
  robot.hear(/\[end2\]/i, function(msg){
@@ -105,7 +105,7 @@ module.exports = function(robot) {
          var mTask = moment(result[i].time, "HH:mm:ss");
 	 if(mTask.hours()==0){
           var formatTask = mTask.format('m分s秒');
-	 }else{	
+	 }else{
           var formatTask = mTask.format('H時間m分s秒');
 	 }
          msg.send(result[i].task+"   "+formatTask);
@@ -156,7 +156,7 @@ function toHms(t) {
         }
      });
  });
- 
+
  robot.hear(/休憩/i, function(msg) {
    msg.send('お疲れさま！ゆっくり休んでね');
  });
@@ -169,17 +169,17 @@ function toHms(t) {
    if(searchDay.length == 1){
 	searchDay = '0' + searchDay;
    }
-   var searchDate = date.getFullYear() + searchDay; 
+   var searchDate = date.getFullYear() + searchDay;
      connection.query("select task, timediff(end,start) as time from attend where user = '"+ user +"' and DATE_FORMAT(start, '%Y%m') = "+ searchDate +";", function(err, result) {
         if (err) {
           msg.send(err);
         }
-        
+
 	for(var i in result){
          var mTask = moment(result[i].time, "HH:mm:ss");
          if(mTask.hours()==0){
           var formatTask = mTask.format('m分s秒');
-         }else{ 
+         }else{
           var formatTask = mTask.format('H時間m分s秒');
          }
          msg.send(result[i].task+"   "+formatTask);

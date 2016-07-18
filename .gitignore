@@ -1,0 +1,10 @@
+node_modules
+.DS_Store*
+.hubot_history
+.editorconfig
+Procfile
+bin/
+external-scripts.json
+hubot-scripts.json
+nohup.out
+scripts/config.js
